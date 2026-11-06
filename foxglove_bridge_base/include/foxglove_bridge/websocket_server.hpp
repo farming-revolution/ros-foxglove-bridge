@@ -517,6 +517,10 @@ inline void Server<ServerConfiguration>::stop() {
     _server.get_alog().write(APP, "WebSocket server run loop terminated");
   }
 
+  if (_handlerCallbackQueue) {
+    _handlerCallbackQueue->stop();
+  }
+
   std::unique_lock<std::shared_mutex> lock(_clientsMutex);
   _clients.clear();
 }
@@ -1120,7 +1124,7 @@ inline void Server<ServerConfiguration>::updateConnectionGraph(
   std::shared_lock<std::shared_mutex> clientsLock(_clientsMutex);
   for (const auto& [hdl, clientInfo] : _clients) {
     if (clientInfo.subscribedToConnectionGraph) {
-      _server.send(hdl, payload, OpCode::TEXT);
+      sendJsonRaw(hdl, payload);
     }
   }
 }
