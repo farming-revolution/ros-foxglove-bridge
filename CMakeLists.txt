@@ -35,7 +35,9 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 option(USE_FOXGLOVE_SDK "Build with Foxglove SDK" OFF)
-add_definitions(-DUSE_FOXGLOVE_SDK=${USE_FOXGLOVE_SDK})
+if(USE_FOXGLOVE_SDK)
+  add_definitions(-DUSE_FOXGLOVE_SDK)
+endif()
 
 # Determine wheter to use standalone or boost asio
 option(USE_ASIO_STANDALONE "Build with standalone ASIO" ON)

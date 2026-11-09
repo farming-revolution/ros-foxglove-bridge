@@ -30,7 +30,9 @@ public:
     _quit = true;
     _cv.notify_all();
     for (auto& thread : _workerThreads) {
-      thread.join();
+      if (thread.joinable()) {
+        thread.join();
+      }
     }
   }
 
